@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.ssm.mapper.ProductMapper">
+
+<!--    Product getList();-->
+    <select id="getList" resultType="Product">
+        select * from product
+    </select>
+
+<!--    Product getProduct(Integer id);-->
+    <select id="getProduct" resultType="Product">
+        select * from product where id = #{id}
+    </select>
+
+<!--    Integer productUpload(@Param("product") Product product);-->
+    <update id="productUpload">
+        UPDATE product
+        SET name = #{name},
+        description = #{description},
+        price = #{price},
+        quantity = #{quantity},
+        status = #{status} 
+        <if test="path != null and path != ''">
+         , path = #{path}
+        </if>
+        
+        WHERE id = #{id};
+    </update>
+
+
+<!--    List<Product> getListToUser();-->
+    <select id="getListToUser" resultType="Product">
+        select * from product where status = 1 and quantity > 0 ;
+    </select>
+
+<!--    Integer removeById(@Param("productId") Integer productId);-->
+    <update id="removeById">
+        update product set quantity = quantity - 1 where id = #{productId};
+    </update>
+<!--    Integer addProductByShopping(@Param("productId") Integer productId, @Param("productQuantity") Integer productQuantity);-->
+    <update id="addProductByShopping">
+        update product set quantity = quantity + #{productQuantity} where id = #{productId}
+    </update>
+
+<!--    Integer delteProductByid(@Param("id") Integer id);-->
+    <delete id="delteProductByid">
+        delete from product where id = #{id}
+    </delete>
+
+<!--    Integer addProduct(Product product);-->
+    <insert id="addProduct">
+        insert into product VALUES (null , #{name} , #{description} , #{price} ,  #{quantity} , 0 , #{path} , #{classify} )
+    </insert>
+    
+    <!-- List<Product> likeProduct(@Param("name")String name); -->
+     <select id="likeProduct" resultType="com.java.ssm.pojo.Product">
+        SELECT * FROM product WHERE NAME LIKE "%"#{name}"%" and status = 1
+    </select>
+</mapper>

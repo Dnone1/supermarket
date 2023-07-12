@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #222;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        #sidebar {
+            width: 20%;
+            background-color: #fff;
+            box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+            float: left;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #555;
+            display: block;
+            padding: 0.5rem;
+            transition: all 0.3s ease-out;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #e0e0e0;
+            color: #222;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .view-btn {
+            color: #fff;
+            background-color: #3e3e3e;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease-out;
+        }
+
+        .view-btn:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+
+        .tab {
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #4e4e4e;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f5f5f5;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            background-color: green;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+        input, textarea, select {
+            width: 194px;
+            height: 34px;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 34px;
+        }
+
+        button[type="submit"] {
+            margin-left: 593px;
+            width: 156px;
+        }
+        img {
+            max-width: 100px;
+            border-radius: 24px;
+        }
+
+        input[type=file] {
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/proByAndim" method="POST" id="MyFo" enctype="multipart/form-data">
+    <table>
+        <thead>
+        <tr>
+            <th>商品名称</th>
+            <th>商品描述</th>
+            <th>商品价格</th>
+            <th>商品库存</th>
+            <th>商品状态</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input type="hidden" name="id" th:value="${product.id}">
+                <input type="text" name="name" th:value="${product.name}">
+            </td>
+            <td><textarea name="description" th:text="${product.description}"></textarea></td>
+            <td><input type="number" name="price" th:value="${product.price}"></td>
+            <td><input type="number" name="quantity" th:value="${product.quantity}"></td>
+            <td>
+                <select name="status">
+                    <option value="0" th:selected="${product.status == 0}">下架</option>
+                    <option value="1" th:selected="${product.status == 1 }">上架</option>
+                </select>
+            </td>
+            <td>
+                <img th:src="${product.path}">
+            </td>
+            <td>
+                <input type="file" name="fileImg">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+<button type="submit" onclick="validateInputs()" id="myButton" class="cen">提交</button>
+</form>
+</body>
+
+<script>
+    function validateInputs() {
+        var priceInput = document.getElementsByName("price")[0];
+        var quantityInput = document.getElementsByName("quantity")[0];
+        var price = parseFloat(priceInput.value);
+        var quantity = parseFloat(quantityInput.value);
+        var form = document.getElementById("MyFo");
+
+        if (price < 0.0 || quantity < 0.0) {
+            alert("价格和数量必须大于或等于0");
+            quantityInput.value = 0 ;
+        }
+    }
+
+</script>
+</html>

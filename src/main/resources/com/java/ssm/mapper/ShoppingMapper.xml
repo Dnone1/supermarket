@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.ssm.mapper.ShoppingMapper">
+
+<!--    Integer addShoppingByUserId(@Param("userId") Integer userId, @Param("productId") Integer productId , @Param("productPrice") double  productPrice) ;
+-->
+    <insert id="addShoppingByUserId">
+        INSERT INTO shopping (id, user_id, product_id, quantity, price)
+        VALUES (null , #{userId} , #{productId} , 1 , #{productPrice} );
+    </insert>
+
+<!--    List<User> getShoopingList(@Param("id") Integer id);-->
+    <select id="getShoopingList" resultMap="shoppingList">
+        SELECT o.* , u.* , p.* ,
+         p.path as productPath
+        FROM shopping o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id AND o.user_id = #{id}
+    </select>
+
+    <resultMap id="shoppingList" type="com.java.ssm.pojo.Shopping">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="price" property="price"></result>
+        <result column="path" property="path"></result>
+        <association property="user" javaType="com.java.ssm.pojo.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+        </association>
+        <association property="product" javaType="com.java.ssm.pojo.Product">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="description" property="description"></result>
+            <result column="price" property="price"></result>
+            <result column="quantity" property="quantity"></result>
+            <result column="status" property="status"></result>
+            <result column="productPath" property="path"></result>
+        </association>
+
+    </resultMap>
+
+<!--    Integer removeShopping(@Param("shoppingId") Integer shoppingId);-->
+    <delete id="removeShopping">
+        delete from shopping where id = #{shoppingId}
+    </delete>
+
+<!--    Integer IFShopping(@Param("userId") Integer userId, @Param("productId") Integer productId);?-->
+    <select id="IFShopping" resultType="com.java.ssm.pojo.Shopping">
+        SELECT * FROM shopping WHERE  user_id = #{userId} AND product_id = #{productId}
+    </select>
+
+<!--        Integer shoppingProduct(@Param("productId") Integer productId , @Param("productPrice") double productPrice);-->
+    <update id="shoppingProduct">
+        update shopping set quantity = quantity + 1 , price = price + #{productPrice} where id = #{productId}
+    </update>
+
+<!--    Shopping addOrderByShoppingId( @Param("shoppingId") Integer shoppingId);-->
+    <select id="addOrderByShoppingId" resultMap="shoppingByOrder">
+        SELECT
+        o.id AS shopping_id,
+        o.price AS shopping_price,
+        o.quantity AS shopping_quantity,
+        p.id as product_id ,
+        u.*,
+        p.*
+        FROM
+        shopping o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id
+        WHERE
+        o.id = #{shoppingId}
+
+    </select>
+
+    <resultMap id="shoppingByOrder" type="com.java.ssm.pojo.Shopping">
+        <id column="shopping_id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="shopping_quantity" property="quantity"></result>
+        <result column="shopping_price" property="price"></result>
+        <result column="path" property="path"></result>
+        <association property="user" javaType="com.java.ssm.pojo.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+        </association>
+        <association property="product" javaType="com.java.ssm.pojo.Product">
+            <id column="product_id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="description" property="description"></result>
+            <result column="price" property="price"></result>
+            <result column="quantity" property="quantity"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+<!--    List<Shopping> getShoppingByArr(String[] split);-->
+    <select id="getShoppingByArr" resultMap="Arr" >
+        SELECT
+        o.id AS shopping_id,
+        o.price AS shopping_price,
+        o.quantity AS shopping_quantity,
+        p.id as product_id ,
+        u.*,
+        p.*
+        FROM
+        shopping o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id
+        WHERE
+        o.id IN
+        (
+        <foreach collection="split" item="sp" separator=",">
+            #{sp}
+        </foreach>
+        )
+    </select>
+
+    <resultMap id="Arr" type="com.java.ssm.pojo.Shopping">
+        <id column="shopping_id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="shopping_quantity" property="quantity"></result>
+        <result column="shopping_price" property="price"></result>
+        <result column="path" property="path"></result>
+        <association property="user" javaType="com.java.ssm.pojo.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+        </association>
+        <association property="product" javaType="com.java.ssm.pojo.Product">
+            <id column="product_id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="description" property="description"></result>
+            <result column="price" property="price"></result>
+            <result column="quantity" property="quantity"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+
+</mapper>

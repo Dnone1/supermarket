@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Webpage</title>
+    <style>
+    	body {
+        	background-color: #ffffff;
+        }
+
+        *{
+            text-decoration: none;
+        }
+        /* 导航样式 */
+        ul{/*设置导航栏的框框*/
+		 	margin: 1px auto;/*框框整体的位置，30px是指离网页的顶部和下部的距离，auto控制的是左右距离为自动调节*/
+			width: 784px;/*框框的宽度*/
+			height: 50px;/*框框的长度*/
+			padding: 0px;/*将框框的padding设置为零，不然会导致框框里的内容与框边缘有间隔*/
+			border:0px solid #000;/*添加边框*/
+		}
+		ul li{
+			list-style-type: none;/* 去掉li前的点 */
+			float: left;/*将li设置成做浮动，变为联动*/
+		}
+		ul li a{
+			display: block;/*将a变成块状*/
+			width: 196px;/*设置块的宽度*/
+			height: 50px;/*设置块的长度*/
+			font-family: Microsoft Yahei;
+			line-height: 50px;/*设置字体在块中rgb(255, 128, 128) 128, 192)*/		
+			background-color:#323f3f;
+			margin: 0px 0px;/*块里的高宽通过margin设置*/
+			color: #fff;
+			text-align: center;/*字体居中*/
+			text-decoration: none;/*去掉下划线*/
+			font-size: 15px;
+		} 
+
+        ul li a:hover {
+            background-color: darkgray;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 主体内容样式 */
+        .content {
+            margin-top: 20px;
+        }
+
+        .tab {
+            overflow-x: auto;
+            margin: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        td, th {
+            padding: 8px;
+            border: solid 1px lightgray;
+        }
+
+        th {
+            background-color: lightgray;
+            text-align: center;
+        }
+
+        .quantity {
+            color: blue;
+            font-weight: bold;
+        }
+
+        td > a:first-child {
+            margin-right: 5px;
+        }
+
+        td > a {
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .span > a {
+		    color: white;
+		    text-decoration: none;
+		    border-radius: 5px;
+		    padding: 5px 10px;
+		}
+        a {
+            background-color: #64d3ff;
+        }
+        td > a:first-child {
+            background-color: #64d3ff;
+        }
+
+        td > a:last-child {
+            background-color: #64d3ff;
+        }
+
+        td > a:active, td > a:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .top {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab table tr:hover {
+            background-color: #ddd;
+        }
+        .a {
+            line-height: 50px;
+            display: inline-block;
+            width: 150px;
+            height: 50px;
+            text-align: center;
+            border: 0;
+            border-radius: 10px;
+            background-color: #c9d0cf;
+            color: black;
+        }
+
+        /* 设置轮播图容器样式 */
+         #slider {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        /* 设置轮播图中的图片样式 */
+        #slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            width: 100%;
+            height: 196%;
+            object-fit: cover;
+        }
+
+        /* 设置当前显示的图片样式 */
+        #slider img.active {
+            opacity: 1;
+        }
+
+        /* 设置导航按钮样式 */
+        .slider-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .slider-nav button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            margin: 0 10px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* 设置底部链接样式 */
+        .slider-links {
+            position: absolute;
+            bottom: 404px;;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            text-align: center;
+            padding: 10px;
+
+        }
+
+        .slider-links a {
+            color: black;
+            margin: 0 20px;
+            text-decoration: none;
+        }
+        .a {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            right: 10px;
+
+        }
+
+        .slider-links {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="slider">
+    <img src="http://localhost:8081/upload/5.jpg" alt="Image 1" class="active">
+    <img src="http://localhost:8081/upload/6.jpg" alt="Image 2">
+    <img src="http://localhost:8081/upload/4.jpg" alt="Image 3">
+</div>
+<!-- <div class="slider-links">
+    <a  th:href="@{/getLisToUser}" class="menu-item" onclick="showContent('products')">商品</a>
+    <a  th:href="@{/getShoppingList}" class="menu-item" onclick="showContent('cart')">购物车</a>
+    <a  th:href="@{/orderList}" class="menu-item" onclick="showContent('orders')">个人订单</a>
+    <a  th:href="@{/userUpload/__${session.administratorUser.id}__}" class="menu-item" onclick="showContent('orders')">个人信息</a>
+</div> -->
+<div class="daohang">
+<ul>
+   <li> <a th:href="@{/getLisToUser}"  onclick="showContent('products')">商品</a></li>
+   <li> <a  th:href="@{/getShoppingList}" onclick="showContent('cart')">购物车</a></li>
+    <li><a  th:href="@{/orderList}"  onclick="showContent('orders')">个人订单</a></li>
+    <li><a  th:href="@{/userUpload/__${session.administratorUser.id}__}" onclick="showContent('orders')">个人信息</a></li>
+</ul>
+</div>
+
+<a class="a" th:href="@{/userUpload/__${session.administratorUser.id}__}" id="personal">欢迎您 <span style="color: red" th:text="${session.administratorUser.username}"></span></a>
+
+<div class="content">
+    <div id="products">
+        <h2 class="top cen">
+            个人订单
+        </h2>
+        <div class="tab">
+            <table>
+
+                <tr>
+                    <th>订单id</th>
+                    <th>收货人</th>
+                    <th>商品名</th>
+                    <th>商品价格</th>
+                    <th>商品数量</th>
+                    <th>下单时间</th>
+                    <th>收货地址</th>
+                    <th>物流</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="ord : ${orders}">
+                    <td th:text="${ord.id}"></td>
+                    <td th:text="${ord.user.username}"></td>
+                    <td th:text="${ord.product.name}"></td>
+                    <td th:text="${ord.price}"></td>
+                    <td th:text="${ord.quantity}"></td>
+                    <td th:text="${#dates.format(ord.pubtime , 'yyyy-MM-dd')}"></td>
+                    <td th:text="${ord.address}"></td>
+                    <td th:if="${ord.status == 0}" style="color: red">未发货</td>
+                    <td th:if="${ord.status == 1}" style="color: red">已收货</td>
+
+                    <td>
+	                    <span  th:if="${ord.status == 0}" class="span">
+                        <a th:href="@{/orderMerchant/__${ord.id}__}">修改</a>                        
+                        </span>
+                        <a th:href="@{/removeOrderByConsumer/__${ord.id}__}" onclick="ale()">删除</a>
+                        <a onclick="add()">催发货</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+
+
+    function add() {
+        alert("商家🐽快发货🥺")
+    }
+
+    function ale() {
+        alert("未发货不能删除")
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var slider = document.getElementById('slider');
+        var images = slider.getElementsByTagName('img');
+        var currentImageIndex = 0;
+        var slideInterval = setInterval(nextImage, 3000);
+
+        function nextImage() {
+            images[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].classList.add('active');
+        }
+    });
+    
+</script>
+
+
+</body>
+</html>

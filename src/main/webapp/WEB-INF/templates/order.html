@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            margin: 20px;
+        }
+        body {
+        	background-color: #ffffff;
+        }
+        label {
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        label {
+            display: block;
+            margin-top: 16px;
+        }
+
+        input,
+        select {
+            width: 20%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <form method="post"  onchange="updatePrice()" th:action="@{/addOrdersBy}">
+        <input type="hidden" id="id" name="shoppingId" th:value="${addOrder.id}" readonly="true"><br>
+        <input type="hidden" name="userId" th:value="${addOrder.user.id}">
+        <input type="hidden" name="productId" th:value="${addOrder.product.id}">
+        <label for="userId">收货人:</label>
+        <input type="text" id="userId" name="userId" th:value="${addOrder.user.username}"><br>
+
+        <label for="productId">商品名:</label>
+        <input type="text" id="productId" name="productId" th:value="${addOrder.product.name}" readonly="true"><br>
+
+        <label for="quantity">数量:</label>
+        <input type="number" id="quantity" name="quantity" th:value="${addOrder.quantity}"><br>
+
+        <label for="price">价格:</label>
+        <input type="text" id="price" name="price" th:value="${addOrder.price}" readonly="true"><br>
+<!--        <span th:text="${addOrder.price}"></span>-->
+        <input type="hidden" name="one" th:value="${addOrder.product.price}">
+        <label for="address">地址:</label>
+        <input type="text" id="address" name="address"><br>
+
+        <input type="submit" value="下单">
+    </form>
+</body>
+
+<script>
+    function updatePrice() {
+        // 获取数量和单价的输入框以及结算按钮
+        var quantityInput = document.getElementById("quantity");
+        var priceInput = document.getElementById("price");
+        var oneInput = document.getElementsByName("one")[0];
+        var submitButton = document.querySelector("input[type='submit']");
+
+        // 获取新数量和单价的值
+        var quantityValue = Number(quantityInput.value);
+        var priceValue = Number(oneInput.value);
+
+        // 更新单价：数量增加时加上name=one的值；数量减少时减去name=one的值
+        if (isNaN(quantityValue) || isNaN(priceValue)) {
+            alert("数量和价格必须为数字！");
+        } else if (quantityValue < 0) {
+            alert("数量不能小于0！");
+            quantityInput.value = 0;
+        } else {
+            priceValue = quantityValue * priceValue;
+            priceInput.value = priceValue.toFixed(2);
+        }
+
+        // 如果数量为0，则禁用结算按钮
+        if (quantityValue === 0) {
+            submitButton.disabled = true;
+            alert("数量不能再小了！");
+        } else {
+            submitButton.disabled = false;
+        }
+
+        // 如果数量为1，将价格设置为单价
+        if (quantityValue === 1) {
+            priceInput.value = oneInput.value;
+        }
+    }
+</script>
+
+<!--<script>-->
+<!--    const quantityInput = document.getElementById("quantity");-->
+<!--    const priceInput = document.getElementsByName("price")[0];-->
+<!--    const oneInput = document.getElementsByName("one")[0];-->
+
+<!--    // 监听"quantity"输入框值的改变-->
+<!--    quantityInput.addEventListener("change", () => {-->
+<!--        const newQuantity = parseInt(quantityInput.value);-->
+<!--        if (newQuantity <= 0) {-->
+<!--            alert("不能再少了！");-->
+<!--            quantityInput.value = 0;-->
+<!--            priceInput.value = "0";-->
+<!--        } else {-->
+<!--            const currentPrice = parseFloat(priceInput.value);-->
+<!--            const unitPrice = parseFloat(oneInput.value);-->
+<!--            const newPrice = currentPrice + (newQuantity - quantityInput.defaultValue) * unitPrice;-->
+<!--            priceInput.value = newPrice.toFixed(2);-->
+<!--            quantityInput.defaultValue = newQuantity;-->
+<!--        }-->
+<!--    });-->
+
+<!--</script>-->
+
+</html>

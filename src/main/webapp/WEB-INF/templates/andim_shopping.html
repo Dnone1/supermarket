@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商家</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #222;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        #sidebar {
+            width: 15%;
+            background-color: #fff;
+            box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+            float: left;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #555;
+            display: block;
+            padding: 0.5rem;
+            transition: all 0.3s ease-out;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #e0e0e0;
+            color: #222;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .view-btn {
+            color: #fff;
+            background-color: #6a6a6a;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease-out;
+        }
+
+        .view-btn:hover {
+            background-color: #e8e8e8;
+            color: black;
+        }
+
+        .tab {
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #474747;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f5f5f5;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            background-color: green;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+
+		.thNew {
+		    width: 390px;
+		}
+		.tdNew > a {
+		    width: 73px;
+		    float: left;
+		    margin-left: 10px;
+		}
+		.thNewTwo {
+		    width: 170px;
+		}
+    </style>
+</head>
+<body>
+<a style="color : black ; background-color: #ffffff" class="a" th:href="@{/userUpload/__${session.administratorUser.id}__}" id="personal">欢迎您 <span style="color: red" th:text="${session.administratorUser.username}"></span></a>
+<div id="container">
+    <div id="sidebar">
+        <h2>导航菜单</h2>
+        <ul>
+            <li><a class="view-btn" data-target="products" id="one">商品管理</a></li>
+            <li><a th:href="@{/addProdectByAndim}" class="view-btn" data-target="products">上传商品</a></li>
+            <li><a th:href="@{/orderListByAndim}" class="view-btn"  >订单管理</a></li>
+            <li><a th:href="@{/oderByUsers}" class="view-btn"  >用户信息管理</a></li>
+        </ul>
+    </div>
+    <div id="main">
+        <div class="view active" id="products">
+            <h2 class="cen">商品管理</h2>
+
+            <div class="tab">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th>商品名称</th>
+                        <th class="thNew">商品描述</th>
+                        <th>商品价格</th>
+                        <th>商品数量</th>
+                        <th>商品状态</th>
+                        <th class="tdNewTwo">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each=" pro : ${productss}">
+                        <td th:text="${pro.id}"></td>
+                        <td th:text="${pro.name}"></td>
+                        <td th:text="${pro.description}"></td>
+                        <td th:text="${pro.price}"></td>
+                        <td th:text="${pro.quantity}"></td>
+                        <td th:if="${pro.status == 1}">上架</td>
+                        <td th:if="${pro.status == 0}">下架</td>
+                        <td class="tdNew">
+                            <a th:href="@{/productByAndim/__${pro.id}__}">修改</a>
+                            <a th:href="@{/delteProductByid/__${pro.id}__}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

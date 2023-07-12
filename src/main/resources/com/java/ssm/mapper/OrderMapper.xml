@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.ssm.mapper.OrderMapper">
+
+
+<!--        List<Order> orderList(@Param("id") Integer id);-->
+    <select id="orderList" resultMap="orders">
+        SELECT o.* , u.* , p.*
+        FROM `order` o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id AND o.user_id = #{id}
+    </select>
+
+    <resultMap id="orders" type="com.java.ssm.pojo.Order">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="price" property="price"></result>
+        <result column="pubtime" property="pubtime"></result>
+        <result column="status" property="status"></result>
+        <result column="address" property="address"></result>
+        <association property="user" javaType="com.java.ssm.pojo.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+        </association>
+        <association property="product" javaType="com.java.ssm.pojo.Product">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="description" property="description"></result>
+            <result column="price" property="price"></result>
+            <result column="quantity" property="quantity"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+<!--    Integer addOrder(Order order);-->
+    <insert id="addOrder">
+        INSERT INTO `order` (user_id, product_id, quantity, price, pubtime, status, address)
+        VALUES (#{userId}, #{productId}, #{quantity}, #{price}, now(), 0, #{address})
+    </insert>
+
+<!--    List<Order> ordersByMerchant();-->
+    <select id="ordersByMerchant" resultMap="ordersByMerchant">
+        SELECT o.* , u.* , p.* ,
+        o.id AS OId ,
+        u.id AS UId ,
+        p.id AS PId ,
+        p.price as productPrice ,
+        p.quantity as productQuantity ,
+        o.`quantity` AS OQuantity ,
+        o.`price` AS OPice
+        FROM `order` o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id
+    </select>
+
+    <resultMap id="ordersByMerchant" type="com.java.ssm.pojo.Order">
+        <id column="OId" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="OQuantity" property="quantity"></result>
+        <result column="OPice" property="price"></result>
+        <result column="pubtime" property="pubtime"></result>
+        <result column="status" property="status"></result>
+        <result column="address" property="address"></result>
+        <association property="user" javaType="com.java.ssm.pojo.User">
+            <id column="UId" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="phone" property="phone"></result>
+        </association>
+        <association property="product" javaType="com.java.ssm.pojo.Product">
+            <id column="PId" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="description" property="description"></result>
+            <result column="productPrice" property="price"></result>
+            <result column="productQuantity" property="quantity"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+
+<!--    Integer removeOrder(@Param("id") Integer id);-->
+    <delete id="removeOrder">
+        delete from `order` where id = #{id} AND STATUS = 1
+    </delete>
+
+<!--    Order uploadOrderByMerchantId(@Param("id") Integer id);-->
+    <select id="uploadOrderByMerchantId" resultMap="ordersByMerchant">
+        SELECT o.* , u.* , p.* ,
+        o.id AS OId ,
+        u.id AS UId ,
+        p.id AS PId ,
+        p.price as productPrice ,
+        o.`quantity` AS OQuantity ,
+        p.quantity as productQuantity ,
+        o.`price` AS OPice
+        FROM `order` o
+        JOIN USER u ON o.user_id = u.id
+        JOIN product p ON o.product_id = p.id
+        where o.id = #{id}
+    </select>
+
+<!--    Order getOrder();-->
+    <select id="getOrder" resultType="com.java.ssm.pojo.Order">
+        select * from `order` where id = #{id}
+    </select>
+
+<!--    Integer uploadOrderById(Order order);-->
+    <update id="uploadOrderById">
+        UPDATE `order`
+        SET
+        user_id = #{userId},
+        product_id = #{productId},
+        quantity = #{quantity},
+        price = #{price},
+        address = #{address} 
+        <if test="status != null and status != ''">
+        , status = #{status}
+        </if>
+        
+        WHERE
+        id = #{id}
+       
+    </update>
+</mapper>

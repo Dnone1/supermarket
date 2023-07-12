@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User Informatio</title>
+    <style>
+    	body {
+        	background-color: #ffffff;
+        }
+        /* 添加一些基本的样式 */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            width: 57px;
+            margin-left: 395px;
+            margin-top: 6px;
+        }
+        input[type=text], input[type=password] {
+            display: block;
+            width: 40%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        select {
+            display: block;
+            font-size: inherit;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            width: 42%;
+        }
+        input[type=submit] {
+            width: 100px;
+            height: 40px;
+            font-size: 15px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #45A049;
+        }
+
+        /* 添加栅格布局以使界面更好看 */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .col-25 {
+            float: left;
+            width: 10%;
+            margin-top: 6px;
+        }
+        .col-75 {
+            float: left;
+            width: 75%;
+            margin-top: 6px;
+            margin-left: 50px;
+        }
+        .aNew {
+            font-size: 15px;
+            text-align: center;
+		    display: inline-block;
+		    width: 100px;
+		    height: 42px;
+		    border: none;
+		    background-color: #4CAF50;
+		    line-height: 42px;
+		    border-radius: 4px;
+		    text-decoration: none;
+		    margin-left: 20px;
+		    color: white;
+        }
+    </style>
+</head>
+<body>
+<h1 align="center">个人信息</h1>
+
+<!-- 创建一个表单 -->
+<form id="user-form" method="POST" th:action="@{/administrator/userUpload}">
+<div align="center">
+    <div class="row">
+        <div class="col-25">
+            <label for="username">用户名:</label>
+        </div>
+        <div class="col-75">
+            <input type="hidden" th:value="${user.id}" name="id">
+            <input type="text" id="username" name="username" th:value="${user.username}" placeholder="请输入您的用户名">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="password">密码:</label>
+        </div>
+        <div class="col-75">
+            <input type="password" id="password" name="password" th:value="${user.password}" placeholder="请输入您的密码">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="phone">手机号:</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="phone" name="phone" th:value="${user.phone}" placeholder="请输入您的手机号">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="gender">性别:</label>
+        </div>
+        <div class="col-75">
+            <select id="gender" name="gender">
+                <option value="Other">请输入</option>
+                <option value="男" th:selected="${user.gender == '男'}">男</option>
+                <option value="女" th:selected="${user.gender == '女'}">女</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="email">邮箱:</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="email" name="email" th:value="${user.email}" placeholder="请输入您的邮箱">
+            <input type="hidden" th:value="${user.isSeller}" name="isSeller">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-25">
+            <label for="phone">地址:</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id="address" name="address" th:value="${user.address}" placeholder="请输入您的地址">
+        </div>
+    </div>
+    
+ 
+
+    <!-- 用JavaScript添加提交表单的逻辑以及加载动画效果 -->
+    <div class="row">
+        <input type="submit" value="提交">
+        <a th:href="@{/return}" class="aNew">退出</a>
+        <div class="loader" style="display:none;"></div>
+    </div>
+    </div>
+</form>
+
+</body>
+
+</html>

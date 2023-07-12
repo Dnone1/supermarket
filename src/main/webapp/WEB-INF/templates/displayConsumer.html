@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Webpage</title>
+    <style>
+    	body {
+    		background-color: #ffffff ;
+    	}
+        /* 导航样式 */
+      ul{/*设置导航栏的框框*/
+		 	margin: 1px auto;/*框框整体的位置，30px是指离网页的顶部和下部的距离，auto控制的是左右距离为自动调节*/
+			width: 784px;/*框框的宽度*/
+			height: 50px;/*框框的长度*/
+			padding: 0px;/*将框框的padding设置为零，不然会导致框框里的内容与框边缘有间隔*/
+			border:0px solid #000;/*添加边框*/
+		}
+		ul li{
+			list-style-type: none;/* 去掉li前的点 */
+			float: left;/*将li设置成做浮动，变为联动*/
+		}
+		ul li a{
+			display: block;/*将a变成块状*/
+			width: 196px;/*设置块的宽度*/
+			height: 50px;/*设置块的长度*/
+			font-family: Microsoft Yahei;
+			line-height: 50px;/*设置字体在块中的高度*/
+			background-color:#323f3f;
+			margin: 0px 0px;/*块里的高宽通过margin设置*/
+			color: #fff;
+			text-align: center;/*字体居中*/
+			text-decoration: none;/*去掉下划线*/
+			font-size: 15px;
+		} 
+
+        
+		ul li a:hover{
+			background-color: darkgray;
+            color: white;
+            cursor: pointer;
+		} 
+
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .tab {
+            overflow-x: auto;
+            margin: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        td, th {
+            padding: 8px;
+            border: solid 1px #ffffff;
+        }
+
+        th {
+            background-color: #ffffff;
+            text-align: center;
+        }
+        td {
+            width: 243px;
+            height: 270px;
+            float: left;
+            margin-left: 63px;
+            margin-bottom: 100px;
+        }
+
+        .quantity {
+            color: blue;
+            font-weight: bold;
+        }
+
+        td > a:first-child {
+            margin-right: 5px;
+        }
+
+        td > a {
+            color: #020101;;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        td > a:first-child {
+            background-color: green;
+        }
+
+        td > a:last-child {
+            background-color: green;
+        }
+
+        td > a:active, td > a:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .top {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .tab table tr:hover {
+            background-color: #ffffff;
+        }
+        /* 设置轮播图容器样式 */
+        #slider {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        /* 设置轮播图中的图片样式 */
+        #slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            width: 100%;
+            height: 196%;
+            object-fit: cover;
+        }
+
+        /* 设置当前显示的图片样式 */
+        #slider img.active {
+            opacity: 1;
+        }
+
+        /* 设置导航按钮样式 */
+        .slider-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .slider-nav button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            margin: 0 10px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* 设置底部链接样式 */
+        .slider-links {
+            position: absolute;
+            bottom: 320px;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            text-align: center;
+            padding: 10px;
+
+        }
+
+        .slider-links a {
+            color: black;
+            margin: 0 20px;
+            text-decoration: none;
+        }
+        .a {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            right: 10px;
+
+        }
+        .pImg > img{
+      
+            max-height: 154px;
+        }
+        .CaiDan {
+            margin-top: 56px;
+            width: 240px;
+        }
+        .CaiDan > a {
+            display: inline-block ;
+            text-align: center;
+            color: white;
+            margin-left: 10px;
+            border: 0;
+            width: 94px;
+            height: 34px;
+            line-height: 34px;
+            border-radius: 4px;
+            background-color: #76ddff;
+            margin-top: -33px;
+        }
+        .Big {
+            font-size: 16px;
+        }
+        tr {
+            float: left;
+        }
+        .a {
+            line-height: 50px;
+            display: inline-block;
+            width: 150px;
+            height: 50px;
+            text-align: center;
+            border: 0;
+            border-radius: 10px;
+            background-color: #c9d0cf;
+            color: black;
+            text-decoration: none;
+        }
+         
+/*         .slider-links {
+            margin-top: 100px;
+        } */
+		.likes {
+		  position: absolute;
+		  top: 385px;
+		  right: -300px;
+		  width:600px ;
+		}
+		
+		 input[type="text"] {
+		  padding: 10px;
+		  border: 1px solid #ccc;
+		  border-radius: 3px;
+		  font-size: 16px;
+		  margin-right: 10px;
+		  border-radius: 6px;
+		  flex: 1;
+		}
+		
+		 input[type="submit"] {
+		  padding: 10px;
+		  border: none;
+		  background-color: #6ac8ff;
+		  color: #fff;
+		  border-radius: 3px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+
+    </style>
+
+</head>
+<body>
+
+<div class="likes">
+	<form th:action="@{/likeProdect}" method="post">
+		<input class="like" name="name" type="text" placeholder="请输入商品名">
+		<input type="submit" value="提交">
+	</form>
+</div>
+
+
+<div id="slider">
+    <img src="http://localhost:8081/upload/5.jpg" alt="Image 1" class="active">
+    <img src="http://localhost:8081/upload/6.jpg" alt="Image 2">
+    <img src="http://localhost:8081/upload/4.jpg" alt="Image 3">
+</div>
+<div class="daohang">
+<ul>
+   <li> <a  onclick="showContent('products')">商品</a></li>
+   <li> <a  th:href="@{/getShoppingList}" onclick="showContent('cart')">购物车</a></li>
+    <li><a  th:href="@{/orderList}"  onclick="showContent('orders')">个人订单</a></li>
+    <li><a  th:href="@{/userUpload/__${session.administratorUser.id}__}" onclick="showContent('orders')">个人信息</a></li>
+</ul>
+</div>
+<a class="a" th:href="@{/userUpload/__${session.administratorUser.id}__}" id="personal">欢迎您 <span style="color: red" th:text="${session.administratorUser.username}"></span></a>
+<div class="menu">
+
+</div>
+<div class="content">
+    <div id="products">
+        <h2 class="top cen">
+            商品
+        </h2>
+        <div class="tab">
+            <table class="tableNew">
+                <tr th:each="produ : ${productsToUser}">
+                    <td>
+                        <div>
+                            <p class="pImg">
+                                <img th:src="${produ.path}" alt="111" >
+                            </p>
+                            <p th:text="${produ.name}" class="Big"></p>
+                            <p>
+                            价格：
+                            <span th:text="${produ.price}" class="Big"></span>
+                            </p>
+                        </div>
+                        <p class="CaiDan">
+                            <a onclick="add()" th:href="@{/addShoppingByUserid/__${session.administratorUser.id}__/__${produ.id}__/__${produ.price}__}">加入购物车</a>
+                            <a th:href="@{/addOrderByProductIdToNew/__${produ.id}__}">购买</a>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript code to show the appropriate content div when a menu item is clicked
+    function showContent(contentId) {
+        var contentDivs = document.querySelectorAll('.content > div');
+        for (var i = 0; i < contentDivs.length; i++) {
+            if (contentDivs[i].id === contentId) {
+                contentDivs[i].style.display = 'block';
+            } else {
+                contentDivs[i].style.display = 'none';
+            }
+        }
+    }
+
+    function add() {
+        alert("加入购物车成功")
+    }
+
+    function s() {
+        alert("下单成功")
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var slider = document.getElementById('slider');
+        var images = slider.getElementsByTagName('img');
+        var currentImageIndex = 0;
+        var slideInterval = setInterval(nextImage, 3000);
+
+        function nextImage() {
+            images[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].classList.add('active');
+        }
+    });
+    
+</script>
+
+
+</html>

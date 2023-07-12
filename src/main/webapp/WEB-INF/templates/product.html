@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        body {
+        	background-color: #ffffff;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            width: 100px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        button[type="submit"] {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        input ,select , textarea{
+            width: 200px;
+            height: 37px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button[type="submit"] {
+            margin-left: 593px;
+            width: 156px;
+        }
+        img {
+            max-width: 100px;
+            border-radius: 24px;
+        }
+
+        input[type=file] {
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+<form action="/productUpload" method="POST" id="MyFo" enctype="multipart/form-data">
+    <table>
+        <thead>
+        <tr>
+            <th>商品名称</th>
+            <th>商品描述</th>
+            <th>商品价格</th>
+            <th>商品库存</th>
+            <th>商品状态</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input type="hidden" name="id" th:value="${product.id}">
+                <input type="text" name="name" th:value="${product.name}">
+            </td>
+            <td><textarea name="description" th:text="${product.description}"></textarea></td>
+            <td><input type="text" name="price" th:value="${product.price}"></td>
+            <td><input type="number" name="quantity" th:value="${product.quantity}"></td>
+            <td>
+                <select name="status">
+                    <option value="0" th:selected="${product.status == 0}">下架</option>
+                    <option value="1" th:selected="${product.status == 1 }">上架</option>
+                </select>
+            </td>
+            <td>
+                <img th:src="${product.path}">
+            </td>
+            <td>
+                <input type="file" name="fileImg">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+<button type="submit" onclick="validateInputs()" id="myButton">提交</button>
+</form>
+</body>
+
+<script>
+    function validateInputs() {
+        var priceInput = document.getElementsByName("price")[0];
+        var quantityInput = document.getElementsByName("quantity")[0];
+        var price = parseFloat(priceInput.value);
+        var quantity = parseFloat(quantityInput.value);
+        var form = document.getElementById("MyFo");
+
+        if (price < 0.0 || quantity < 0.0) {
+            alert("价格和数量必须大于或等于0");
+            quantityInput.value = 0 ;
+        }
+    }
+
+</script>
+</html>

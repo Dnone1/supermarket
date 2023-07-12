@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.ssm.mapper.UserMapper">
+
+<!--    User userLogin(String username , String password ) ;-->
+    <select id="userLogin" resultType="User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+
+<!--    Administrator uploadUser(@Param("id") Integer id);-->
+    <select id="uploadUser" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
+<!--    Integer administratorUserUpload(User user);-->
+    <update id="administratorUserUpload">
+        UPDATE user
+        SET username = #{username}, password = #{password}, phone = #{phone}, gender = #{gender}, email = #{email}, is_seller = #{isSeller} , address = #{address}
+        WHERE id = #{id};
+    </update>
+
+<!--    Integer insertUser(User user);-->
+    <insert id="insertUser">
+        INSERT INTO user(id, username, password, phone, gender, email, is_seller , address)
+        VALUES (null, #{username}, #{password}, #{phone}, #{gender}, #{email}, 0 , #{address});
+    </insert>
+
+<!--    List<User> getUsers();-->
+    <select id="getUsers" resultType="com.java.ssm.pojo.User">
+        select * from user
+    </select>
+
+<!--    Integer deleteUser(Integer id);-->
+    <delete id="deleteUser">
+        delete from user where id = #{id}
+    </delete>
+    
+     <!-- User getUserByid(@Param("id") Integer id) ; -->
+     <select id="getUserByid" resultType="com.java.ssm.pojo.User">
+     	select * from user where id = #{id}
+     </select>
+     
+     <!-- User getUserByName(@Param("name") String name) ; -->
+     <select id="getUserByName" resultType="com.java.ssm.pojo.User">
+     select * from `user` where username = #{name}
+     </select>
+</mapper>

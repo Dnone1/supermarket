@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情页</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        	background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #product {
+            display: flex;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+            max-width: 80vw;
+            width: 100%;
+            border-radius: 4px;
+        }
+        #product:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+        }
+        #product img {
+            width: 30%;    
+		    object-fit: cover;
+		    object-position: center;
+		    border: 26px solid #ffffff
+        }
+        #product form {
+            width: 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #product input, #product button {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #product input:focus, #product button:focus {
+            outline: none;
+        }
+        #product button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        #product button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="product">
+        <img th:src="${product.path}" alt="Product Image">
+        <form th:action="@{/addOrdersBy}" method="POST">
+            <h1>商品详情页</h1>
+            <p>产品说明</p>
+            <input type="hidden" name="userId"  th:value="${session.administratorUser.id}" >
+            <input type="hidden" name="productId"  th:value="${product.id}" >
+            <label for="name">商品:</label>
+            <input type="text" style="border: none" name="name" id="name" th:value="${product.name}" readonly="true">
+
+            <label for="quantity">数量:</label>
+            <input type="number" name="quantity" id="quantity" min="1" value="1" required>
+
+            <label for="price">价格:</label>
+            <input type="text" name="price" id="price" th:value="${product.price}" style="border: none" readonly="true">
+            <input type="hidden" name="p" th:value="${product.price}">
+            <label for="description">描述:</label>
+            <input type="text" name="description" id="description" th:value="${product.description}"  style="border: none" readonly="true">
+
+            <label for="address">地址:</label>
+            <input type="text" name="address" id="address">
+
+            <button type="submit" style="border: none">购买</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("quantity").addEventListener("change", function(){
+        var price = document.getElementById("price");
+        var p = document.getElementsByName("p")[0].value;
+        if(this.value < 1){
+            this.value = 1;
+        }
+        price.value = parseFloat(p) * parseInt(this.value);
+    });
+    
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var address = document.querySelector('#address').value;
+
+        if (address.trim() === '') { // 判断输入框不为空
+            alert('地址不能为空！');
+            event.preventDefault(); // 阻止表单提交
+        }
+    });
+</script>
+
+</body>
+</html>
